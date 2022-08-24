@@ -95,7 +95,6 @@ public class MainViewModel extends AndroidViewModel {
 
             @Override
             public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                bleDeviceLive.setValue(bleDevice);
                 messagesLive.setValue(getApplication().getString(R.string.connected));
             }
 

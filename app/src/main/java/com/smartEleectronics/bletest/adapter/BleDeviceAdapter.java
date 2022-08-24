@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.clj.fastble.BleManager;
 import com.clj.fastble.data.BleDevice;
 import com.smartEleectronics.bletest.R;
-import com.smartEleectronics.bletest.databinding.BluetoothDeviceBinding;
+import com.smartEleectronics.bletest.databinding.BluetoothDeviceRowLayoutBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,9 @@ public class BleDeviceAdapter extends RecyclerView.Adapter<BleDeviceAdapter.BleD
         if(inflater == null){
             inflater = LayoutInflater.from(parent.getContext());
         }
-        BluetoothDeviceBinding binding = DataBindingUtil.inflate(
+        BluetoothDeviceRowLayoutBinding binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.bluetooth_device,
+                R.layout.bluetooth_device_row_layout,
                 parent,
                 false
         );
@@ -50,19 +50,19 @@ public class BleDeviceAdapter extends RecyclerView.Adapter<BleDeviceAdapter.BleD
 
     public class BleDeviceHolder extends RecyclerView.ViewHolder{
 
-        BluetoothDeviceBinding layoutBinding;
+        BluetoothDeviceRowLayoutBinding layoutBinding;
 
-        public BleDeviceHolder(BluetoothDeviceBinding binding) {
+        public BleDeviceHolder(BluetoothDeviceRowLayoutBinding binding) {
             super(binding.getRoot());
             this.layoutBinding = binding;
         }
 
         public void bind(BleDevice device){
-            layoutBinding.txtBtName.setText(device.getName());
+            /*layoutBinding.txtBtName.setText(device.getName());
             layoutBinding.txtBtMac.setText(device.getMac());
-            layoutBinding.btSignalDB.setText(String.valueOf(device.getRssi()));
+            layoutBinding.btSignalDB.setText(String.valueOf(device.getRssi()));*/
 
-            layoutBinding.container.setOnClickListener(view -> {
+            layoutBinding.btnConnect.setOnClickListener(view -> {
                 if(mListener != null) mListener.onConnect(device);
             });
         }

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -64,9 +66,28 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
         initViewModel();
         iniToolbar();
-        initButton();
         initRecyclerView();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(hasLocationPermission()) {
+            if (!checkGPSIsOpen()) {
+                enableGpsByUser();
+                return true;
+            }
+            mainViewModel.startScan();
+        } else {
+            requestPermissions();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -105,21 +126,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public void iniToolbar() {
         setSupportActionBar(mainBinding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_title);
-    }
-
-    public void initButton() {
-        mainBinding.btnScan.setOnClickListener(view -> {
-            if (hasLocationPermission()) {
-                if (!checkGPSIsOpen()) {
-                    enableGpsByUser();
-                    return;
-                }
-                mainViewModel.startScan();
-            } else {
-                requestPermissions();
-            }
-
-        });
     }
 
     public void initRecyclerView(){
