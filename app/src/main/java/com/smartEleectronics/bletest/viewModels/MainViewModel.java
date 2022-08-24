@@ -1,14 +1,18 @@
 package com.smartEleectronics.bletest.viewModels;
 
 import android.app.Application;
+import android.bluetooth.BluetoothGatt;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleGattCallback;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
 import com.smartEleectronics.bletest.R;
 
 import java.util.List;
@@ -17,12 +21,30 @@ public class MainViewModel extends AndroidViewModel {
     private static final String TAG = "MainViewModel";
     private Application application;
 
+    /// Live data variables
+    private MutableLiveData<String> messagesLive;
+    private MutableLiveData<BleDevice> bleDeviceLive;
+
     public MainViewModel(@NonNull Application application) {
         super(application);
 
         this.application = application;
         initBle();
     }
+
+    public MutableLiveData<String> getToastMessage(){
+        if(messagesLive == null){
+            messagesLive = new MutableLiveData<String>();
+        }
+        return messagesLive;
+    }
+    public MutableLiveData<BleDevice> getNewBleDevice(){
+        if(bleDeviceLive == null){
+            bleDeviceLive = new MutableLiveData<BleDevice>();
+        }
+        return bleDeviceLive;
+    }
+
 
     public void initBle(){
         BleManager.getInstance().init(getApplication());
@@ -38,25 +60,49 @@ public class MainViewModel extends AndroidViewModel {
                 BleManager.getInstance().scan(new BleScanCallback() {
                     @Override
                     public void onScanFinished(List<BleDevice> scanResultList) {
-                        Toast.makeText(application, "Scan finished", Toast.LENGTH_SHORT).show();
+                        messagesLive.setValue(getApplication().getString(R.string.scan_finished));
                     }
 
                     @Override
                     public void onScanStarted(boolean success) {
-                        Toast.makeText(application, "Scan started", Toast.LENGTH_SHORT).show();
+                        messagesLive.setValue(getApplication().getString(R.string.scan_started));
                     }
 
                     @Override
                     public void onScanning(BleDevice bleDevice) {
-
+                        bleDeviceLive.setValue(bleDevice);
                     }
                 });
             }else{
-                Toast.makeText(application, R.string.turn_on_ble, Toast.LENGTH_SHORT).show();
+                BleManager.getInstance().enableBluetooth();
             }
         }else{
-            Toast.makeText(application, R.string.ble_not_support, Toast.LENGTH_SHORT).show();
+            messagesLive.setValue(getApplication().getString(R.string.ble_not_support));
         }
+    }
+
+    public void connectToDevice(BleDevice bleDevice){
+        BleManager.getInstance().connect(bleDevice, new BleGattCallback() {
+            @Override
+            public void onStartConnect() {
+                messagesLive.setValue(getApplication().getString(R.string.connecting));
+            }
+
+            @Override
+            public void onConnectFail(BleDevice bleDevice, BleException exception) {
+                messagesLive.setValue(getApplication().getString(R.string.connect_fail));
+            }
+
+            @Override
+            public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
+                bleDeviceLive.setValue(bleDevice);
+            }
+
+            @Override
+            public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
+
+            }
+        });
     }
 
     @Override
