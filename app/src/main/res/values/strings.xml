@@ -8,4 +8,5 @@
     <string name="connect_fail">Sorry, failed to connect</string>
     <string name="connecting">Connecting</string>
     <string name="location_permission">This application cannot work without Location Permission.</string>
+    <string name="connected">connected</string>
 </resources>
