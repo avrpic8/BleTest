@@ -19,6 +19,11 @@
         android:theme="@style/Theme.BleTest"
         tools:targetApi="31">
         <activity
+            android:name=".DetailActivity"
+            android:exported="false"
+            android:label="@string/title_activity_detail"
+            android:theme="@style/Theme.BleTest.NoActionBar" />
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>

@@ -14,4 +14,13 @@
         <!-- Customize your theme here. -->
         <item name="android:actionMenuTextColor">@color/white</item>
     </style>
+
+    <style name="Theme.BleTest.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.BleTest.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.BleTest.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

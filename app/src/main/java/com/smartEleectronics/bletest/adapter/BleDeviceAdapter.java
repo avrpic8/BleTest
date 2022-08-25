@@ -58,6 +58,7 @@ public class BleDeviceAdapter extends RecyclerView.Adapter<BleDeviceAdapter.BleD
         }
 
         public void bind(BleDevice device){
+            this.layoutBinding.setBleDeviceItem(device);
             /*layoutBinding.txtBtName.setText(device.getName());
             layoutBinding.txtBtMac.setText(device.getMac());
             layoutBinding.btSignalDB.setText(String.valueOf(device.getRssi()));*/
