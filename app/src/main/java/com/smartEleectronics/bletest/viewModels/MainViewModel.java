@@ -22,8 +22,9 @@ public class MainViewModel extends AndroidViewModel {
     private Application application;
 
     /// Live data variables
-    private MutableLiveData<String> messagesLive;
-    private MutableLiveData<BleDevice> bleDeviceLive;
+    private MutableLiveData<String> liveMessages;
+    private MutableLiveData<BleDevice> liveBleDevice;
+    private MutableLiveData<Boolean> liveScanStopBtName;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -33,18 +34,23 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<String> getToastMessage(){
-        if(messagesLive == null){
-            messagesLive = new MutableLiveData<String>();
+        if(liveMessages == null){
+            liveMessages = new MutableLiveData<String>();
         }
-        return messagesLive;
+        return liveMessages;
     }
     public MutableLiveData<BleDevice> getNewBleDevice(){
-        if(bleDeviceLive == null){
-            bleDeviceLive = new MutableLiveData<BleDevice>();
+        if(liveBleDevice == null){
+            liveBleDevice = new MutableLiveData<BleDevice>();
         }
-        return bleDeviceLive;
+        return liveBleDevice;
     }
-
+    public MutableLiveData<Boolean> getScanStopBtName(){
+        if(liveScanStopBtName == null){
+            liveScanStopBtName = new MutableLiveData<Boolean>();
+        }
+        return liveScanStopBtName;
+    }
 
     public void initBle(){
         BleManager.getInstance().init(getApplication());
@@ -60,24 +66,37 @@ public class MainViewModel extends AndroidViewModel {
                 BleManager.getInstance().scan(new BleScanCallback() {
                     @Override
                     public void onScanFinished(List<BleDevice> scanResultList) {
-                        messagesLive.setValue(getApplication().getString(R.string.scan_finished));
+                        liveMessages.setValue(getApplication().getString(R.string.scan_finished));
+                        liveScanStopBtName.setValue(false);
                     }
 
                     @Override
                     public void onScanStarted(boolean success) {
-                        messagesLive.setValue(getApplication().getString(R.string.scan_started));
+                        liveMessages.setValue(getApplication().getString(R.string.scan_started));
                     }
 
                     @Override
                     public void onScanning(BleDevice bleDevice) {
-                        bleDeviceLive.setValue(bleDevice);
+                        liveBleDevice.setValue(bleDevice);
                     }
                 });
             }else{
                 BleManager.getInstance().enableBluetooth();
             }
         }else{
-            messagesLive.setValue(getApplication().getString(R.string.ble_not_support));
+            liveMessages.setValue(getApplication().getString(R.string.ble_not_support));
+        }
+    }
+
+    public void startOrStopScanning(){
+        if(!Boolean.TRUE.equals(liveScanStopBtName.getValue())){
+            startScan();
+            liveScanStopBtName.setValue(true);
+        }
+
+        else {
+            BleManager.getInstance().cancelScan();
+            liveScanStopBtName.setValue(false);
         }
     }
 
@@ -85,17 +104,17 @@ public class MainViewModel extends AndroidViewModel {
         BleManager.getInstance().connect(bleDevice, new BleGattCallback() {
             @Override
             public void onStartConnect() {
-                messagesLive.setValue(getApplication().getString(R.string.connecting));
+                liveMessages.setValue(getApplication().getString(R.string.connecting));
             }
 
             @Override
             public void onConnectFail(BleDevice bleDevice, BleException exception) {
-                messagesLive.setValue(getApplication().getString(R.string.connect_fail));
+                liveMessages.setValue(getApplication().getString(R.string.connect_fail));
             }
 
             @Override
             public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                messagesLive.setValue(getApplication().getString(R.string.connected));
+                liveMessages.setValue(getApplication().getString(R.string.connected));
             }
 
             @Override

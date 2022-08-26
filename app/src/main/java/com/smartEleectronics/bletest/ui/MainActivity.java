@@ -1,11 +1,13 @@
 package com.smartEleectronics.bletest.ui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -38,6 +41,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
+    private static final String TAG = "MainActivity";
+
     private static final String[] permissions =
             {Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION,};
@@ -45,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private static final int REQUEST_CODE_PERMISSION_LOCATION = 3;
 
     private Toolbar toolbar;
+    private Menu menu;
+
     private ActivityMainBinding mainBinding;
     private MainViewModel mainViewModel;
 
@@ -56,7 +63,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     ActivityResultLauncher<Intent> locationSetting = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                showToast("Gps module is enabled");
+                if(checkGPSIsOpen()){
+                    showToast("Gps module is enabled");
+                } else{
+                    showToast("Please enable Gps module");
+                }
             }
     );
 
@@ -73,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -83,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 enableGpsByUser();
                 return true;
             }
-            mainViewModel.startScan();
+            mainViewModel.startOrStopScanning();
         } else {
             requestPermissions();
         }
@@ -115,12 +127,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         mainViewModel.getToastMessage().observe(this, s -> showToast(s));
-
         mainViewModel.getNewBleDevice().observe(this, newDevice -> {
             deviceAdapter.addDevice(newDevice);
             deviceAdapter.notifyDataSetChanged();
 
         });
+        mainViewModel.getScanStopBtName().observe(this, this::updateBtScanSwitchName);
     }
 
     public void iniToolbar() {
@@ -174,6 +186,15 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private void enableGpsByUser(){
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         locationSetting.launch(intent);
+    }
+
+    private void updateBtScanSwitchName(Boolean state) {
+        MenuItem item = menu.findItem(R.id.btnScan);
+        if (state) {
+            item.setTitle("Stop Scanning");
+        } else {
+            item.setTitle("Start Scan");
+        }
     }
 
     public void showToast(String msg) {
