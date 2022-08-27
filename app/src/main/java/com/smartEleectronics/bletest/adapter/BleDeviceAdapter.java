@@ -1,6 +1,9 @@
 package com.smartEleectronics.bletest.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,16 +14,21 @@ import com.clj.fastble.BleManager;
 import com.clj.fastble.data.BleDevice;
 import com.smartEleectronics.bletest.R;
 import com.smartEleectronics.bletest.databinding.BluetoothDeviceRowLayoutBinding;
+import com.smartEleectronics.bletest.ui.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BleDeviceAdapter extends RecyclerView.Adapter<BleDeviceAdapter.BleDeviceHolder> {
 
+    private Context mContext;
     private LayoutInflater inflater;
     private List<BleDevice> bleDeviceList = new ArrayList<>();
     private OnDeviceClickListener mListener;
 
+    public BleDeviceAdapter(Context context){
+        this.mContext = context;
+    }
 
     @NonNull
     @Override
@@ -66,7 +74,17 @@ public class BleDeviceAdapter extends RecyclerView.Adapter<BleDeviceAdapter.BleD
             layoutBinding.btnConnect.setOnClickListener(view -> {
                 if(mListener != null) mListener.onConnect(device);
             });
+
+            layoutBinding.container.setOnClickListener(view -> {
+                openDetailActivity(device);
+            });
         }
+    }
+
+    private void openDetailActivity(BleDevice device){
+        Intent details = new Intent(mContext.getApplicationContext(), DetailActivity.class);
+        details.putExtra(mContext.getString(R.string.ble_device_data_key), device);
+        mContext.startActivity(details);
     }
 
     public void addDevice(BleDevice bleDevice) {

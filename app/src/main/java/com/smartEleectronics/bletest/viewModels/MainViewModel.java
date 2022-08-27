@@ -35,19 +35,19 @@ public class MainViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> getToastMessage(){
         if(liveMessages == null){
-            liveMessages = new MutableLiveData<String>();
+            liveMessages = new MutableLiveData<>();
         }
         return liveMessages;
     }
     public MutableLiveData<BleDevice> getNewBleDevice(){
         if(liveBleDevice == null){
-            liveBleDevice = new MutableLiveData<BleDevice>();
+            liveBleDevice = new MutableLiveData<>();
         }
         return liveBleDevice;
     }
     public MutableLiveData<Boolean> getScanStopBtName(){
         if(liveScanStopBtName == null){
-            liveScanStopBtName = new MutableLiveData<Boolean>();
+            liveScanStopBtName = new MutableLiveData<>();
         }
         return liveScanStopBtName;
     }
@@ -60,7 +60,7 @@ public class MainViewModel extends AndroidViewModel {
                 .setOperateTimeout(5000);
     }
 
-    public void startScan(){
+    private void startScan(){
         if(BleManager.getInstance().isSupportBle()) {
             if(BleManager.getInstance().isBlueEnable()) {
                 BleManager.getInstance().scan(new BleScanCallback() {
@@ -73,6 +73,7 @@ public class MainViewModel extends AndroidViewModel {
                     @Override
                     public void onScanStarted(boolean success) {
                         liveMessages.setValue(getApplication().getString(R.string.scan_started));
+                        liveScanStopBtName.setValue(true);
                     }
 
                     @Override
@@ -88,15 +89,17 @@ public class MainViewModel extends AndroidViewModel {
         }
     }
 
+    private void stopScan(){
+        BleManager.getInstance().cancelScan();
+        liveScanStopBtName.setValue(false);
+    }
+
     public void startOrStopScanning(){
         if(!Boolean.TRUE.equals(liveScanStopBtName.getValue())){
             startScan();
-            liveScanStopBtName.setValue(true);
         }
-
         else {
-            BleManager.getInstance().cancelScan();
-            liveScanStopBtName.setValue(false);
+            stopScan();
         }
     }
 

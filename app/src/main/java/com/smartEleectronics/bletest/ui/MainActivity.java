@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     public void initRecyclerView(){
         mainBinding.myDevicesList.setHasFixedSize(true);
-        deviceAdapter = new BleDeviceAdapter();
+        deviceAdapter = new BleDeviceAdapter(this);
         deviceAdapter.setOnDeviceClickListener(new BleDeviceAdapter.OnDeviceClickListener() {
             @Override
             public void onConnect(BleDevice bleDevice) {

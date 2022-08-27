@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="bleDeviceData"
+            type="com.clj.fastble.data.BleDevice" />
+    </data>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".FirstFragment">
+
+                <TextView
+                    android:id="@+id/txtBleMac"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{bleDeviceData.name}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/commandContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toBottomOf="@id/txtBleMac"
+                    app:layout_constraintRight_toRightOf="@id/txtBleMac"
+                    app:layout_constraintLeft_toLeftOf="@id/txtBleMac"
+                    android:background="@drawable/info_box_background"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_info"
+                        android:layout_marginLeft="8dp"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/txtCommandLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/write_your_data"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtWriteCommand"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintTop_toBottomOf="@id/commandContainer"
+                    app:layout_constraintRight_toRightOf="@id/commandContainer"
+                    app:layout_constraintLeft_toLeftOf="@id/commandContainer"
+                    android:layout_marginTop="5dp"
+                    android:padding="8dp"
+                    android:textSize="12dp"
+                    android:inputType="text|textMultiLine"
+                    android:background="@drawable/custom_input"
+                    android:gravity="top" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSendData"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/edtWriteCommand"
+                    app:layout_constraintRight_toRightOf="@+id/edtWriteCommand"
+                    app:layout_constraintLeft_toLeftOf="@id/edtWriteCommand"
+                    android:text="@string/send_data" />
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/responseContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toBottomOf="@id/btnSendData"
+                    app:layout_constraintRight_toRightOf="@id/btnSendData"
+                    app:layout_constraintLeft_toLeftOf="@id/btnSendData"
+                    android:background="@drawable/info_box_background"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_info"
+                        android:layout_marginLeft="8dp"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/txtResponseLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/response_from_module"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtResponse"
+                    android:layout_width="0dp"
+                    android:layout_height="350dp"
+                    app:layout_constraintTop_toBottomOf="@id/responseContainer"
+                    app:layout_constraintRight_toRightOf="@id/responseContainer"
+                    app:layout_constraintLeft_toLeftOf="@id/responseContainer"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="8dp"
+                    android:textSize="12dp"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:background="@drawable/custom_input"
+                    android:gravity="top" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+</layout>
