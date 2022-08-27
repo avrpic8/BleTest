@@ -5,27 +5,28 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.utils.HexUtil;
+import com.smartEleectronics.bletest.R;
 import com.smartEleectronics.bletest.util.Constants;
 
 public class DetailViewModel extends AndroidViewModel {
+
+    /// Live data variables
+    private MutableLiveData<String> liveMessages = new MutableLiveData<>();
+    
     public DetailViewModel(@NonNull Application application) {
         super(application);
-
-        initBle();
     }
 
-    private void initBle(){
-        BleManager.getInstance().init(getApplication());
-        BleManager.getInstance().enableLog(true)
-                .setReConnectCount(1, 500)
-                .setConnectOverTime(20000)
-                .setOperateTimeout(5000);
+    public MutableLiveData<String> getToastMessage(){
+        return liveMessages;
     }
 
     public void sendDataToBleDevice(BleDevice device, String data) {
@@ -47,6 +48,25 @@ public class DetailViewModel extends AndroidViewModel {
                             Log.i("write", "onWriteFailure: " + exception.toString());
                         }
                     });
+        }else{
+            liveMessages.setValue(getApplication().getString(R.string.first_connect));
         }
+    }
+
+    public void receiveDataFromBleDevice(BleDevice device){
+        BleManager.getInstance().read(device,
+                Constants.SERVICE_UUID,
+                Constants.CHARACTERISTIC_UUID,
+                new BleReadCallback() {
+                    @Override
+                    public void onReadSuccess(byte[] data) {
+
+                    }
+
+                    @Override
+                    public void onReadFailure(BleException exception) {
+
+                    }
+                });
     }
 }

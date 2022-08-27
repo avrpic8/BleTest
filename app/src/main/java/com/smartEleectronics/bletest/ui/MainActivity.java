@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             @Override
             public void onConnect(BleDevice bleDevice) {
                 if(!BleManager.getInstance().isConnected(bleDevice)){
-                    BleManager.getInstance().cancelScan();
+                    //BleManager.getInstance().cancelScan();
                     mainViewModel.connectToDevice(bleDevice);
                 }
             }

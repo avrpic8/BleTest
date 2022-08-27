@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.clj.fastble.data.BleDevice;
@@ -39,9 +41,7 @@ public class BleDetailFragment extends Fragment {
         bleDevice = getBleDevice();
         binding.setBleDeviceData(bleDevice);
 
-        detailViewModel = new ViewModelProvider(this).get(DetailViewModel.class);
-        binding.setLifecycleOwner(this);
-
+        initViewModel();
         initButtons();
     }
 
@@ -49,6 +49,17 @@ public class BleDetailFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void initViewModel(){
+        detailViewModel = new ViewModelProvider(this).get(DetailViewModel.class);
+        binding.setLifecycleOwner(this);
+
+        detailViewModel.getToastMessage().observe(getViewLifecycleOwner(), s -> {
+            showToast(s);
+        });
+
+        detailViewModel.receiveDataFromBleDevice(bleDevice);
     }
 
     private void initButtons(){
@@ -63,6 +74,10 @@ public class BleDetailFragment extends Fragment {
                 .getIntent()
                 .getParcelableExtra(getString(R.string.ble_device_data_key));
         return device;
+    }
+
+    public void showToast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
 }

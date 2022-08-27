@@ -24,4 +24,5 @@
     <string name="write_your_data">Write your data</string>
     <string name="send_data">Send Data</string>
     <string name="response_from_module">Response from module</string>
+    <string name="first_connect">Please connect to device first and try again</string>
 </resources>
