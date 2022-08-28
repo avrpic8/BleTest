@@ -62,7 +62,17 @@
                         android:text="@string/write_your_data"
                         android:textSize="14sp"
                         android:textColor="@color/white"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+
+                    <View
+                        android:id="@+id/activeSend"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/circle_red"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="8dp"/>
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
 
@@ -117,7 +127,16 @@
                         android:text="@string/response_from_module"
                         android:textSize="14sp"
                         android:textColor="@color/white"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+                    <View
+                        android:id="@+id/activeReceive"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/circle_green"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="8dp"/>
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -132,10 +151,10 @@
                     android:layout_marginBottom="8dp"
                     android:padding="8dp"
                     android:textSize="12dp"
-                    android:inputType="none"
-                    android:focusable="false"
                     android:background="@drawable/custom_input"
                     android:gravity="top" />
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
