@@ -2,6 +2,7 @@ package com.smartEleectronics.bletest.ui;
 
 import android.os.Bundle;
 
+import com.clj.fastble.data.BleDevice;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +30,7 @@ public class DetailActivity extends AppCompatActivity {
         binding = ActivityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
+        initToolbar();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_detail);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
@@ -42,6 +43,14 @@ public class DetailActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private void initToolbar(){
+        BleDevice device = getIntent().getParcelableExtra(getString(R.string.ble_device_data_key));
+        String deviceName = device.getName();
+        if(deviceName == null) deviceName = "?";
+        binding.toolbar.setTitle("Ble Detail  " + "(" + deviceName + ")");
+        setSupportActionBar(binding.toolbar);
     }
 
     @Override

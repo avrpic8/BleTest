@@ -1,4 +1,4 @@
-package com.smartEleectronics.bletest.ui;
+package com.smartEleectronics.bletest.ui.fragments;
 
 import android.os.Bundle;
 import android.util.Log;

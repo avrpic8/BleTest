@@ -15,7 +15,7 @@
         <entry key="app/src/main/res/layout/bluetooth_device_layout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/bluetooth_device_row_layout.xml" value="0.32065217391304346" />
         <entry key="app/src/main/res/layout/content_detail.xml" value="0.32065217391304346" />
-        <entry key="app/src/main/res/layout/fragment_ble_detail.xml" value="0.47338129496402875" />
+        <entry key="app/src/main/res/layout/fragment_ble_detail.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.18177083333333333" />
       </map>

@@ -7,8 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.smartEleectronics.bletest.ui.BleDetailFragment"
-        android:label="@string/ble_detail_fragment"
+        android:name="com.smartEleectronics.bletest.ui.fragments.BleDetailFragment"
         tools:layout="@layout/fragment_ble_detail">
 
         <action
@@ -17,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.smartEleectronics.bletest.ui.SecondFragment"
+        android:name="com.smartEleectronics.bletest.ui.fragments.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
