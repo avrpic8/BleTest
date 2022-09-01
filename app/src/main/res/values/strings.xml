@@ -27,4 +27,5 @@
     <string name="first_connect">Please connect to device first and try again</string>
     <string name="rx">RX</string>
     <string name="tx">TX</string>
+    <string name="disconnected">Disconnect from the device</string>
 </resources>

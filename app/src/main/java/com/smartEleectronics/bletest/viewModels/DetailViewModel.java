@@ -19,6 +19,8 @@ import com.clj.fastble.exception.BleException;
 import com.smartEleectronics.bletest.R;
 import com.smartEleectronics.bletest.util.Constants;
 
+import java.nio.ByteBuffer;
+
 public class DetailViewModel extends AndroidViewModel {
 
     /// Live data variables
@@ -48,7 +50,7 @@ public class DetailViewModel extends AndroidViewModel {
             sending.setValue(true);
             BleManager.getInstance().write(device,
                     Constants.SERVICE_UUID,
-                    Constants.CHARACTERISTIC_UUID_WRITE,
+                    Constants.CHARACTERISTIC_UUID,
                     data.getBytes(),
                     new BleWriteCallback() {
                         @Override
@@ -74,7 +76,7 @@ public class DetailViewModel extends AndroidViewModel {
         BleManager.getInstance().notify(
                 device,
                 Constants.SERVICE_UUID,
-                Constants.CHARACTERISTIC_UUID_NOTIFY,
+                Constants.CHARACTERISTIC_UUID,
                 false,
                 new BleNotifyCallback() {
                     @Override
@@ -94,7 +96,6 @@ public class DetailViewModel extends AndroidViewModel {
                         reading.setValue(true);
                         liveReceivedData.setValue(data);
                         Log.i("read", "onRead: " + new String(data));
-                        //addText(new String(data));
                     }
                 });
     }
@@ -123,6 +124,7 @@ public class DetailViewModel extends AndroidViewModel {
 
     public void addText(EditText text, String content) {
         text.append(content);
+        text.append("\n");
         int offset = text.getLineCount() * text.getLineHeight();
         if (offset > text.getHeight()) {
             text.scrollTo(0, offset - text.getHeight());

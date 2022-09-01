@@ -62,7 +62,7 @@ public class BleDetailFragment extends Fragment {
         BleManager.getInstance().stopNotify(
                 bleDevice,
                 Constants.SERVICE_UUID,
-                Constants.CHARACTERISTIC_UUID_NOTIFY);
+                Constants.CHARACTERISTIC_UUID);
     }
 
     private void initViewModel(){
@@ -75,7 +75,6 @@ public class BleDetailFragment extends Fragment {
 
         detailViewModel.receiveDataFromBleDevice(bleDevice);
         detailViewModel.getLiveReceivedData().observe(getViewLifecycleOwner(), data -> {
-            Log.i("read", "initViewModel: " + new String(data));
             getActivity().runOnUiThread(() -> {
                 detailViewModel.addText(binding.edtResponse, new String(data));
             });

@@ -122,7 +122,7 @@ public class MainViewModel extends AndroidViewModel {
 
             @Override
             public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
-
+                liveMessages.setValue(application.getString(R.string.disconnected));
             }
         });
     }
