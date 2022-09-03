@@ -57,6 +57,9 @@ dependencies {
     /// Bluetooth low energy
     implementation 'com.github.Jasonchenlijian:FastBle:2.4.0'
 
+    /// Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     /// Easy permission
     implementation 'pub.devrel:easypermissions:3.0.0'
 }

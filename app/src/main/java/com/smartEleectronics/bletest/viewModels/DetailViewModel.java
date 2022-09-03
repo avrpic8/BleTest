@@ -29,6 +29,8 @@ public class DetailViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> sending = new MutableLiveData<>();
     private MutableLiveData<Boolean> reading = new MutableLiveData<>();
 
+    private char counterText = 0;
+
     /// Blink led animation
     private Animation anim = new AlphaAnimation(0.0f, 1.0f);
 
@@ -50,7 +52,7 @@ public class DetailViewModel extends AndroidViewModel {
             sending.setValue(true);
             BleManager.getInstance().write(device,
                     Constants.SERVICE_UUID,
-                    Constants.CHARACTERISTIC_UUID,
+                    Constants.CHARACTERISTIC_UUID_RX,
                     data.getBytes(),
                     new BleWriteCallback() {
                         @Override
@@ -76,7 +78,7 @@ public class DetailViewModel extends AndroidViewModel {
         BleManager.getInstance().notify(
                 device,
                 Constants.SERVICE_UUID,
-                Constants.CHARACTERISTIC_UUID,
+                Constants.CHARACTERISTIC_UUID_TX,
                 false,
                 new BleNotifyCallback() {
                     @Override
@@ -123,6 +125,11 @@ public class DetailViewModel extends AndroidViewModel {
     }
 
     public void addText(EditText text, String content) {
+        counterText ++;
+        if(counterText == 70){
+            counterText = 0;
+            text.setText("");
+        }
         text.append(content);
         text.append("\n");
         int offset = text.getLineCount() * text.getLineHeight();
