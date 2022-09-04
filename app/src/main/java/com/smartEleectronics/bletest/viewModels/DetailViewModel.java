@@ -18,6 +18,7 @@ import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.smartEleectronics.bletest.R;
 import com.smartEleectronics.bletest.util.Constants;
+import com.smartEleectronics.bletest.util.SensorLiveData;
 
 import java.nio.ByteBuffer;
 
@@ -29,6 +30,8 @@ public class DetailViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> sending = new MutableLiveData<>();
     private MutableLiveData<Boolean> reading = new MutableLiveData<>();
 
+    public SensorLiveData sensorData;
+
     private char counterText = 0;
 
     /// Blink led animation
@@ -36,6 +39,8 @@ public class DetailViewModel extends AndroidViewModel {
 
     public DetailViewModel(@NonNull Application application) {
         super(application);
+
+        sensorData = new SensorLiveData(application.getBaseContext());
     }
 
     public MutableLiveData<String> getToastMessage(){
@@ -136,5 +141,10 @@ public class DetailViewModel extends AndroidViewModel {
         if (offset > text.getHeight()) {
             text.scrollTo(0, offset - text.getHeight());
         }
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
     }
 }
